@@ -1,0 +1,61 @@
+{% extends "website/dashboard/base.html" %}
+
+{% block title %}Buy Crypto – BlockNova{% endblock %}
+{% block page_title %}Buy Crypto{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="mb-4 p-3 rounded-lg text-white
+            {% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" action="{% url 'website:buy' %}" class="w-full bg-white rounded-xl shadow p-8">
+    {% csrf_token %}
+
+    <h3 class="text-xl font-bold text-blue-900 mb-6">
+        Buy Cryptocurrency
+    </h3>
+
+    <div class="space-y-5">
+
+        <div>
+            <label class="block mb-1 font-medium">Select Asset</label>
+            <select name="asset" required class="w-full border rounded-lg px-4 py-3">
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="USDT">USDT</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block mb-1 font-medium">Amount (USD)</label>
+            <input
+                type="number"
+                name="amount"
+                min="15"
+                step="0.01"
+                required
+                class="w-full border rounded-lg px-4 py-3"
+            >
+        </div>
+
+        <div class="text-sm text-gray-600">
+            Payments are processed securely by Coinbase.
+        </div>
+
+        <button
+            type="submit"
+            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold"
+        >
+            Continue to Coinbase Checkout
+        </button>
+
+    </div>
+</form>
+
+{% endblock %}
