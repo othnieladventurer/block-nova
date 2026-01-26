@@ -142,7 +142,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
+TATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 
