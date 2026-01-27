@@ -40,10 +40,13 @@ SECRET_KEY = 'django-insecure--xq!xzh+!qe+3+1ilzd7cwka-hgb%--f@@d&z9#c=%-n(*@=q8
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
     "cryptobridge.easypasshosting.com",
+    "www.cryptobridge.easypasshosting.com",
     "block-nova-production.up.railway.app",
+    "127.0.0.1",
 ]
+
+
 
 CSRF_TRUSTED_ORIGINS = [
     "https://cryptobridge.easypasshosting.com",
