@@ -39,13 +39,7 @@ SECRET_KEY = 'django-insecure--xq!xzh+!qe+3+1ilzd7cwka-hgb%--f@@d&z9#c=%-n(*@=q8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "cryptobridge.easypasshosting.com",
-    "www.cryptobridge.easypasshosting.com",
-    "block-nova-production.up.railway.app",
-    "127.0.0.1",
-]
-
+ALLOWED_HOSTS = ["*"]
 
 
 CSRF_TRUSTED_ORIGINS = [
