@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy – Easy Pass</title>
+  <meta name="description" content="Easy Pass Privacy Policy – Learn how we collect, use, and protect your information." />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 w-full bg-white shadow z-50">
+  <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
+    <a href="/" class="text-2xl font-bold text-blue-900">
+      Easy <span class="text-green-500">Pass</span>
+    </a>
+    <a href="/" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+      Back Home
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white pt-32 pb-20">
+  <div class="max-w-4xl mx-auto px-8 text-center">
+    <h1 class="text-5xl font-bold mb-6">Privacy Policy</h1>
+    <p class="text-xl">How Easy Pass collects, uses, and protects your information</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section class="bg-white">
+  <div class="max-w-4xl mx-auto px-8 py-20 space-y-10">
+
+    <p class="text-sm text-gray-500">Last updated: January 2026</p>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">1. Non-Custodial Notice</h2>
+      <p>
+        Easy Pass is a <strong>non-custodial platform</strong>. We do not store, control, or have access to your
+        cryptocurrencies, private keys, or wallet credentials. All transactions are executed directly on the blockchain.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">2. Information We Collect</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Email address and basic account details</li>
+        <li>Support communications</li>
+        <li>Device, browser, IP address, and usage analytics</li>
+        <li>Transaction metadata (excluding private keys)</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">3. Blockchain Data</h2>
+      <p>
+        Cryptocurrency transactions occur on public blockchains. We do not control or alter blockchain records.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">4. How We Use Your Data</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Operate and improve the platform</li>
+        <li>Facilitate buy, sell, and swap transactions</li>
+        <li>Prevent fraud and abuse</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">5. Data Security</h2>
+      <p>
+        We apply reasonable security measures. However, blockchain transactions are irreversible and carry inherent risk.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">6. Your Rights</h2>
+      <p>
+        You may request access, correction, or deletion of your personal data where permitted by law.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">7. Policy Updates</h2>
+      <p>
+        Continued use of Easy Pass constitutes acceptance of any updates to this policy.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-gray-900 text-gray-300">
+    <div class="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-8">
+        <div>
+            <h3 class="text-white text-xl font-bold mb-4">Easy Pass </h3>
+            <p>Secure and fast platform for buying and selling crypto globally.</p>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-3">Navigation</h4>
+            <ul class="space-y-2">
+                <li><a href="#hero" class="hover:text-white">Home</a></li>
+                <li><a href="#about" class="hover:text-white">About</a></li>
+                <li><a href="#services" class="hover:text-white">Services</a></li>
+                <li><a href="#how" class="hover:text-white">How It Works</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-3">Services</h4>
+            <ul class="space-y-2">
+                <li><a href="#services" class="hover:text-white">Buy Crypto</a></li>
+                <li><a href="#services" class="hover:text-white">Sell Crypto</a></li>
+                <li><a href="#services" class="hover:text-white">Withdraw</a></li>
+                <li><a href="#services" class="hover:text-white">Deposit</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-3">Support</h4>
+            <ul class="space-y-2">
+                <li><a href="#contact" class="hover:text-white">Contact</a></li>
+                <li><a href="#contact" class="hover:text-white">Help Center</a></li>
+                <li><a href="#contact" class="hover:text-white">FAQ</a></li>
+                <li><a href="{% url 'website:terms_of_use'%}" class="hover:text-white">Terms Of Use</a></li>
+                <li><a href="{% url 'website:privacy_policy'%}" class="hover:text-white">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center text-sm text-gray-500 py-6 border-t border-gray-800">
+        © 2026 Easy Pass — All rights reserved
+    </div>
+</footer>
+
+</body>
+</html>

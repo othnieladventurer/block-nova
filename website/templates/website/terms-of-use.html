@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service – Easy Pass</title>
+  <meta name="description" content="Easy Pass Terms of Service – Rules and conditions for using our platform." />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 w-full bg-white shadow z-50">
+  <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
+    <a href="/" class="text-2xl font-bold text-blue-900">
+      Easy <span class="text-green-500">Pass</span>
+    </a>
+    <a href="/" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+      Back Home
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white pt-32 pb-20">
+  <div class="max-w-4xl mx-auto px-8 text-center">
+    <h1 class="text-5xl font-bold mb-6">Terms of Service</h1>
+    <p class="text-xl">Conditions for using Easy Pass</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section class="bg-white">
+  <div class="max-w-4xl mx-auto px-8 py-20 space-y-10">
+
+    <p class="text-sm text-gray-500">Last updated: January 2026</p>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">1. Platform Description</h2>
+      <p>
+        Easy Pass is a <strong>non-custodial digital platform</strong> that enables users to buy, sell, and swap
+        supported cryptocurrencies. We do not provide financial advice.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">2. User Responsibilities</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>You control your wallet and private keys</li>
+        <li>You verify transaction details before submission</li>
+        <li>You comply with all applicable laws</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">3. Non-Custodial Disclaimer</h2>
+      <p>
+        Easy Pass cannot reverse transactions, recover funds, or access user assets.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">4. Fees</h2>
+      <p>
+        Service fees are disclosed before confirmation and are non-refundable once a transaction begins.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">5. Risks</h2>
+      <p>
+        Cryptocurrency markets are volatile. Network delays, congestion, or user error may result in loss of funds.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">6. Prohibited Use</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Illegal or fraudulent activity</li>
+        <li>Abuse of platform infrastructure</li>
+        <li>Money laundering or sanctions violations</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">7. Limitation of Liability</h2>
+      <p>
+        Easy Pass is not liable for losses arising from blockchain activity, third-party services, or user error.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-bold text-blue-900 mb-3">8. Modifications</h2>
+      <p>
+        We may update these Terms at any time. Continued use constitutes acceptance.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-gray-900 text-gray-300">
+    <div class="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-8">
+        <div>
+            <h3 class="text-white text-xl font-bold mb-4">Easy Pass </h3>
+            <p>Secure and fast platform for buying and selling crypto globally.</p>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-3">Navigation</h4>
+            <ul class="space-y-2">
+                <li><a href="#hero" class="hover:text-white">Home</a></li>
+                <li><a href="#about" class="hover:text-white">About</a></li>
+                <li><a href="#services" class="hover:text-white">Services</a></li>
+                <li><a href="#how" class="hover:text-white">How It Works</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-3">Services</h4>
+            <ul class="space-y-2">
+                <li><a href="#services" class="hover:text-white">Buy Crypto</a></li>
+                <li><a href="#services" class="hover:text-white">Sell Crypto</a></li>
+                <li><a href="#services" class="hover:text-white">Withdraw</a></li>
+                <li><a href="#services" class="hover:text-white">Deposit</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="text-white font-bold mb-3">Support</h4>
+            <ul class="space-y-2">
+                <li><a href="#contact" class="hover:text-white">Contact</a></li>
+                <li><a href="#contact" class="hover:text-white">Help Center</a></li>
+                <li><a href="#contact" class="hover:text-white">FAQ</a></li>
+                <li><a href="{% url 'website:terms_of_use'%}" class="hover:text-white">Terms Of Use</a></li>
+                <li><a href="{% url 'website:privacy_policy'%}" class="hover:text-white">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center text-sm text-gray-500 py-6 border-t border-gray-800">
+        © 2026 Easy Pass — All rights reserved
+    </div>
+</footer>
+
+</body>
+</html>

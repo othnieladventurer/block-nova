@@ -63,3 +63,21 @@ def withdraw_crypto(request):
     return render(request, 'website/dashboard/withdraw_crypto.html')
 
 
+
+
+
+
+
+def terms_of_use(request):
+    return render(request, 'website/terms-of-use.html')
+
+
+
+
+
+
+def privacy_policy(request):
+    return render(request, 'website/privacy_policy.html')
+
+
+
