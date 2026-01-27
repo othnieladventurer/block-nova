@@ -17,56 +17,86 @@
 </style>
 
 <body class="bg-gray-50 text-gray-800 scroll-smooth">
-
 <!-- ================= NAVBAR ================= -->
 <nav class="fixed top-0 w-full bg-white shadow z-50">
-    <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
-        <a href="#hero" class="text-2xl font-bold text-blue-900">
-            Block<span class="text-green-500">Nova</span>
-        </a>
+  <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
+    <!-- Logo -->
+    <a href="#hero" class="text-2xl font-bold text-blue-900">
+      Block<span class="text-green-500">Nova</span>
+    </a>
 
-        <div class="hidden md:flex items-center space-x-8">
-            <a href="#hero" class="hover:text-blue-700">Home</a>
-            <a href="#about" class="hover:text-blue-700">About</a>
-            <a href="#services" class="hover:text-blue-700">Services</a>
-            <a href="#how" class="hover:text-blue-700">How it Works</a>
-            <a href="#contact" class="hover:text-blue-700">Contact</a>
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex items-center space-x-8">
+      <a href="#hero" class="hover:text-blue-700">Home</a>
+      <a href="#about" class="hover:text-blue-700">About</a>
+      <a href="#services" class="hover:text-blue-700">Services</a>
+      <a href="#how" class="hover:text-blue-700">How it Works</a>
+      <a href="#contact" class="hover:text-blue-700">Contact</a>
 
-
-            {% if user.is_authenticated %}
-            <a href="{% url 'crypto:dashboard' %}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-            Dashboard
-            </a>
-            {% else %}
-            <a href="{% url 'users:login' %}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-            Login
-            </a>
-            {% endif %}
-        </div>
+      {% if user.is_authenticated %}
+      <a href="{% url 'crypto:dashboard' %}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        Dashboard
+      </a>
+      {% else %}
+      <a href="{% url 'users:login' %}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        Login
+      </a>
+      {% endif %}
     </div>
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden text-blue-900 focus:outline-none">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="h-0 overflow-hidden transition-all duration-500 ease-in-out md:hidden bg-white shadow-lg">
+    <div class="flex flex-col items-center justify-center h-full space-y-6 px-8 py-6">
+      <a href="#hero" class="text-lg font-medium hover:text-blue-700">Home</a>
+      <a href="#about" class="text-lg font-medium hover:text-blue-700">About</a>
+      <a href="#services" class="text-lg font-medium hover:text-blue-700">Services</a>
+      <a href="#how" class="text-lg font-medium hover:text-blue-700">How it Works</a>
+      <a href="#contact" class="text-lg font-medium hover:text-blue-700">Contact</a>
+
+      {% if user.is_authenticated %}
+      <a href="{% url 'crypto:dashboard' %}" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        Dashboard
+      </a>
+      {% else %}
+      <a href="{% url 'users:login' %}" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        Login
+      </a>
+      {% endif %}
+    </div>
+  </div>
 </nav>
+
 
 <!-- ================= HERO ================= -->
 <section id="hero" class="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-    <div class="max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
-        <div>
-            <h1 class="text-5xl font-bold mb-6 leading-tight">
-                Buy and Sell Cryptocurrencies Safely
-            </h1>
-            <p class="text-xl mb-8">
-                Minimum purchase $15 with a $6 platform fee. Fast, secure transactions and crypto delivered directly to your wallet within 30 minutes.
-            </p>
-            <div class="flex gap-4">
-                <a href="{% url 'users:login' %}" class="bg-green-500 hover:bg-green-600 px-8 py-4 rounded-lg font-bold">
-                    Buy Crypto
-                </a>
-                <a href="{% url 'users:register' %}" class="bg-white text-blue-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100">
-                    Create Account
-                </a>
-            </div>
-        </div>
-        <img src="https://images.pexels.com/photos/5435844/pexels-photo-5435844.jpeg" class="rounded-xl shadow-2xl">
+  <div class="max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <h1 class="text-5xl font-bold mb-6 leading-tight">
+        Buy and Sell Cryptocurrencies Safely
+      </h1>
+      <p class="text-xl mb-8">
+        Minimum purchase $15 with a $6 platform fee. Fast, secure transactions and crypto delivered directly to your wallet within 30 minutes.
+      </p>
+      <div class="flex gap-4">
+        <a href="{% url 'users:login' %}" class="bg-green-500 hover:bg-green-600 px-8 py-4 rounded-lg font-bold">
+          Buy Crypto
+        </a>
+        <a href="{% url 'users:register' %}" class="bg-white text-blue-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100">
+          Create Account
+        </a>
+      </div>
     </div>
+    <img src="https://images.pexels.com/photos/5435844/pexels-photo-5435844.jpeg" class="rounded-xl shadow-2xl">
+  </div>
 </section>
 
 <!-- ================= TRUST / STATS ================= -->
@@ -292,6 +322,23 @@
         © 2026 BlockNova — All rights reserved
     </div>
 </footer>
+
+
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuBtn.addEventListener('click', () => {
+    if (mobileMenu.classList.contains('h-0')) {
+      mobileMenu.classList.remove('h-0');
+      mobileMenu.classList.add('h-screen'); // expand to full viewport height
+    } else {
+      mobileMenu.classList.remove('h-screen');
+      mobileMenu.classList.add('h-0'); // collapse
+    }
+  });
+</script>
+
 
 <script>
     feather.replace();

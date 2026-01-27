@@ -6,7 +6,12 @@ from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomPasswordChangeForm
 
 
+
 def login_view(request):
+    # 🚫 Prevent logged-in users from accessing login page
+    if request.user.is_authenticated:
+        return redirect('website:dashboard')
+
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -15,7 +20,9 @@ def login_view(request):
             return redirect('website:dashboard')
     else:
         form = CustomAuthenticationForm()
+    
     return render(request, 'customusers/login.html', {'form': form})
+
 
 
 
@@ -56,7 +63,7 @@ def password_change_view(request):
 def logout_view(request):
     auth_logout(request)
     messages.success(request, "You have been logged out successfully.")
-    return redirect('login')
+    return redirect('users:login')
 
 
 

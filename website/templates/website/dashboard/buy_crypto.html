@@ -5,6 +5,7 @@
 
 {% block content %}
 
+<!-- Messages -->
 {% if messages %}
     {% for message in messages %}
         <div class="mb-4 p-3 rounded-lg text-white
@@ -14,48 +15,39 @@
     {% endfor %}
 {% endif %}
 
-<form method="post" action="{% url 'website:buy' %}" class="w-full bg-white rounded-xl shadow p-8">
-    {% csrf_token %}
-
-    <h3 class="text-xl font-bold text-blue-900 mb-6">
+<!-- Buy Crypto Widget -->
+<div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow p-6 sm:p-8">
+    <h3 class="text-lg sm:text-xl font-bold text-blue-900 mb-6">
         Buy Cryptocurrency
     </h3>
 
-    <div class="space-y-5">
+    <p class="text-sm text-gray-600 mb-4">
+        Payments are processed securely by Coinbase.
+    </p>
 
-        <div>
-            <label class="block mb-1 font-medium">Select Asset</label>
-            <select name="asset" required class="w-full border rounded-lg px-4 py-3">
-                <option value="BTC">Bitcoin (BTC)</option>
-                <option value="ETH">Ethereum (ETH)</option>
-                <option value="USDT">USDT</option>
-            </select>
-        </div>
+    <!-- Launch Onramp -->
+    <button id="buy-button"
+            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition">
+        Continue to Coinbase Checkout
+    </button>
+</div>
 
-        <div>
-            <label class="block mb-1 font-medium">Amount (USD)</label>
-            <input
-                type="number"
-                name="amount"
-                min="15"
-                step="0.01"
-                required
-                class="w-full border rounded-lg px-4 py-3"
-            >
-        </div>
+<!-- Coinbase Onramp SDK -->
+<script src="https://cdn.coinbase.com/onramp/v1/onramp.min.js"></script>
+<script>
+  const onramp = new CoinbaseOnramp({
+    appId: "f3838bff-660e-4561-944d-a1226e0f8520",   
+    destinationWallets: [
+      { address: "0xYourWalletAddress", blockchains: ["base"] }
+    ],
+    defaultAsset: "USDC", 
+    defaultFiat: "USD",
+    redirectUrl: "{{ callback_url }}"  // Passed from your Django view
+  });
 
-        <div class="text-sm text-gray-600">
-            Payments are processed securely by Coinbase.
-        </div>
-
-        <button
-            type="submit"
-            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold"
-        >
-            Continue to Coinbase Checkout
-        </button>
-
-    </div>
-</form>
+  document.getElementById("buy-button").addEventListener("click", () => {
+    onramp.open();
+  });
+</script>
 
 {% endblock %}

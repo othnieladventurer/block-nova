@@ -4,36 +4,40 @@
 {% block page_title %}Sell Crypto{% endblock %}
 
 {% block content %}
-<div class="max-w-xl bg-white rounded-xl shadow p-8">
-    <h3 class="text-xl font-bold text-blue-900 mb-6">
+<div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow p-6 sm:p-8">
+    <h3 class="text-lg sm:text-xl font-bold text-blue-900 mb-6">
         Sell Your Crypto
     </h3>
 
     <div class="space-y-5">
+        <!-- Select Crypto -->
         <div>
-            <label class="block mb-1 font-medium">Select Crypto</label>
-            <select class="w-full border rounded-lg px-4 py-3">
+            <label class="block mb-1 font-medium text-sm sm:text-base">Select Crypto</label>
+            <select class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
                 <option>Bitcoin (BTC)</option>
                 <option>Ethereum (ETH)</option>
                 <option>USDT</option>
             </select>
         </div>
 
+        <!-- Amount -->
         <div>
-            <label class="block mb-1 font-medium">Amount</label>
+            <label class="block mb-1 font-medium text-sm sm:text-base">Amount</label>
             <input type="number" placeholder="Enter amount"
-                   class="w-full border rounded-lg px-4 py-3">
+                   class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
         </div>
 
+        <!-- Receive Method -->
         <div>
-            <label class="block mb-1 font-medium">Receive Method</label>
-            <select class="w-full border rounded-lg px-4 py-3">
+            <label class="block mb-1 font-medium text-sm sm:text-base">Receive Method</label>
+            <select class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
                 <option>Bank Transfer</option>
                 <option>Wallet Balance</option>
             </select>
         </div>
 
-        <button class="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold">
+        <!-- Submit Button -->
+        <button class="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold transition">
             Submit Sell Request
         </button>
     </div>

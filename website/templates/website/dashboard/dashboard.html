@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- STATS -->
-<div class="grid md:grid-cols-4 gap-6 mb-10">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
     <div class="bg-white p-6 rounded-xl shadow">
         <p class="text-sm text-gray-500">Total Transactions</p>
         <h3 class="text-2xl font-bold mt-2">24</h3>
@@ -24,56 +24,62 @@
     </div>
 </div>
 
-<!-- QUICK ACTIONS -->
-<div class="grid md:grid-cols-3 gap-8 mb-12">
 
+<!-- QUICK ACTIONS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
     <!-- BUY -->
-    <div class="bg-white rounded-xl shadow p-8">
-        <h3 class="text-xl font-bold text-blue-900 mb-2">Buy Crypto</h3>
-        <p class="text-gray-600 mb-6">
-            Minimum purchase: <strong>$15</strong><br>
-            Service fee: <strong>$6</strong>
-        </p>
+    <div class="flex flex-col justify-between bg-white rounded-xl shadow p-8 h-full">
+        <div>
+            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Buy Crypto</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-6">
+                Minimum purchase: <strong>$15</strong><br>
+                Service fee: <strong>$6</strong>
+            </p>
+        </div>
         <a href="{% url 'website:buy' %}"
-           class="block text-center bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-bold">
+           class="block text-center bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-bold mt-auto">
             Buy Crypto
         </a>
     </div>
 
     <!-- SELL -->
-    <div class="bg-white rounded-xl shadow p-8">
-        <h3 class="text-xl font-bold text-blue-900 mb-2">Sell Crypto</h3>
-        <p class="text-gray-600 mb-6">
-            Convert your crypto to local funds.
-        </p>
+    <div class="flex flex-col justify-between bg-white rounded-xl shadow p-8 h-full">
+        <div>
+            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Sell Crypto</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-6">
+                Convert your crypto to local funds.
+            </p>
+        </div>
         <a href="{% url 'website:sell' %}"
-           class="block text-center bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold">
+           class="block text-center bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold mt-auto">
             Sell Crypto
         </a>
     </div>
 
     <!-- WITHDRAW -->
-    <div class="bg-white rounded-xl shadow p-8">
-        <h3 class="text-xl font-bold text-blue-900 mb-2">Withdraw Crypto</h3>
-        <p class="text-gray-600 mb-6">
-            Receive funds in your wallet within 30 minutes.
-        </p>
+    <div class="flex flex-col justify-between bg-white rounded-xl shadow p-8 h-full">
+        <div>
+            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Withdraw Crypto</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-6">
+                Receive funds in your wallet within 30 minutes.
+            </p>
+        </div>
         <a href="{% url 'website:withdraw' %}"
-           class="block text-center bg-gray-800 hover:bg-gray-900 text-white py-3 rounded-lg font-bold">
+           class="block text-center bg-gray-800 hover:bg-gray-900 text-white py-3 rounded-lg font-bold mt-auto">
             Withdraw Crypto
         </a>
     </div>
-
 </div>
+
 
 <!-- TRANSACTION HISTORY -->
 <div class="bg-white rounded-xl shadow p-8">
-    <h2 class="text-2xl font-bold text-blue-900 mb-6">
+    <h2 class="text-xl md:text-2xl font-bold text-blue-900 mb-6">
         Transaction History
     </h2>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full min-w-[500px] text-left border-collapse text-sm md:text-base">
             <thead>
                 <tr class="border-b">
                     <th class="py-3">Date</th>
