@@ -145,14 +145,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-TATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-
-COINBASE_CDP_API_KEY_ID = config("COINBASE_CDP_API_KEY_ID")
-COINBASE_CDP_API_SECRET_KEY = config("COINBASE_CDP_API_SECRET_KEY")
-COINBASE_CDP_ENVIRONMENT = config("COINBASE_CDP_ENVIRONMENT", default="sandbox")
-
-
-
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = BASE_DIR / 'media'
 

@@ -34,6 +34,11 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+
+
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.db import models
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
@@ -41,19 +46,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     country = models.CharField(max_length=2, choices=COUNTRIES, blank=True, null=True)
 
+    wallet_address = models.CharField(max_length=255, blank=True, null=True)
+
+    # NEW FIELD: Profile picture
+    profile_picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'  # login with email
-    REQUIRED_FIELDS = []       # only email is required for superuser
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email
 
 
-
-
-        

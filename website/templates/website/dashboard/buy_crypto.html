@@ -4,50 +4,159 @@
 {% block page_title %}Buy Crypto{% endblock %}
 
 {% block content %}
-
-<!-- Messages -->
-{% if messages %}
-    {% for message in messages %}
-        <div class="mb-4 p-3 rounded-lg text-white
-            {% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
-<!-- Buy Crypto Widget -->
-<div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow p-6 sm:p-8">
+<!-- Buy Page -->
+<div id="buyPage" class="w-full bg-white rounded-xl shadow p-6 sm:p-8">
     <h3 class="text-lg sm:text-xl font-bold text-blue-900 mb-6">
         Buy Cryptocurrency
     </h3>
 
-    <p class="text-sm text-gray-600 mb-4">
-        Payments are processed securely by Coinbase.
-    </p>
+    {% if error %}
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+        {{ error }}
+    </div>
+    {% endif %}
 
-    <!-- Launch Onramp -->
-    <button id="buy-button"
-            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition">
-        Continue to Coinbase Checkout
-    </button>
+    <form method="post" id="buyForm">
+        {% csrf_token %}
+        <div class="space-y-4">
+            <input type="number" step="0.01" name="usd_amount" id="usd_amount" placeholder="Enter USD amount"
+                   class="w-full border rounded-lg p-3" required>
+
+            <select name="crypto" id="crypto" class="w-full border rounded-lg p-3" required>
+                <option value="bitcoin">Bitcoin (BTC)</option>
+                <option value="ethereum">Ethereum (ETH)</option>
+                <option value="litecoin">Litecoin (LTC)</option>
+                <option value="dogecoin">Dogecoin (DOGE)</option>
+                <option value="solana">Solana (SOL)</option>
+            </select>
+
+            <button type="button" id="calculateBtn"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition">
+                Get Quote
+            </button>
+        </div>
+
+        <!-- Result -->
+        <div id="result" class="mt-6 p-4 bg-blue-100 rounded-lg hidden"></div>
+
+        <!-- Contact Method -->
+        <div id="contactSection" class="mt-6 hidden">
+            <label for="contact_method">Preferred Contact Method:</label>
+            <select name="contact_method" id="contact_method" class="w-full border rounded-lg p-3" required>
+                <option value="email">Email</option>
+                <option value="whatsapp">WhatsApp</option>
+            </select>
+
+            <!-- Email Field -->
+            <div id="emailField" class="mt-4 hidden">
+                <label for="contact_email">Email Address:</label>
+                <input type="email" name="contact_email" id="contact_email"
+                       class="w-full border rounded-lg p-3" placeholder="you@example.com">
+            </div>
+
+            <!-- WhatsApp Field -->
+            <div id="whatsappField" class="mt-4 hidden">
+                <label for="whatsapp_number">WhatsApp Number:</label>
+                <input type="text" name="whatsapp_number" id="whatsapp_number"
+                       class="w-full border rounded-lg p-3" placeholder="+509XXXXXXXX">
+            </div>
+        </div>
+
+        <!-- Buy Button -->
+        <div id="buySection" class="mt-6 hidden">
+            <button type="button" id="buyBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold transition">
+                Buy Now
+            </button>
+        </div>
+    </form>
 </div>
 
-<!-- Coinbase Onramp SDK -->
-<script src="https://cdn.coinbase.com/onramp/v1/onramp.min.js"></script>
+<!-- Success Page -->
+<div id="successPage" class="w-full bg-white rounded-xl shadow p-6 sm:p-8 hidden">
+    <h3 class="text-lg sm:text-xl font-bold text-green-900 mb-6">
+        Purchase Successful!
+    </h3>
+    <p class="text-sm text-gray-700 mb-4">
+        Thank you for your purchase. Please verify your <span class="font-bold">email address</span> or 
+        <span class="font-bold">WhatsApp number</span> to receive instructions for completing your transaction.
+    </p>
+</div>
+
 <script>
-  const onramp = new CoinbaseOnramp({
-    appId: "f3838bff-660e-4561-944d-a1226e0f8520",   
-    destinationWallets: [
-      { address: "0xYourWalletAddress", blockchains: ["base"] }
-    ],
-    defaultAsset: "USDC", 
-    defaultFiat: "USD",
-    redirectUrl: "{{ callback_url }}"  // Passed from your Django view
-  });
+async function getCryptoPrice(crypto) {
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data[crypto].usd;
+}
 
-  document.getElementById("buy-button").addEventListener("click", () => {
-    onramp.open();
-  });
+document.getElementById("calculateBtn").addEventListener("click", async () => {
+    const usdAmount = parseFloat(document.getElementById("usd_amount").value);
+    const crypto = document.getElementById("crypto").value;
+
+    if (!usdAmount || usdAmount < 10) {
+        alert("Minimum purchase is $10. Please update the amount.");
+        return;
+    }
+
+    try {
+        const price = await getCryptoPrice(crypto);
+        const fee = 6;
+        const total = usdAmount + fee;
+        const cryptoAmount = usdAmount / price;
+
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = `
+            <p class="font-bold text-blue-900">
+                Entered: $${usdAmount.toFixed(2)} <br>
+                Fee: $${fee.toFixed(2)} <br>
+                Total: $${total.toFixed(2)} <br><br>
+                You will receive: ${cryptoAmount.toFixed(6)} ${crypto.toUpperCase()}
+            </p>
+            <p class="text-sm text-gray-700">
+                Current ${crypto.charAt(0).toUpperCase() + crypto.slice(1)} price: $${price}
+            </p>
+        `;
+        resultDiv.classList.remove("hidden");
+
+        document.getElementById("contactSection").classList.remove("hidden");
+        document.getElementById("buySection").classList.remove("hidden");
+    } catch (error) {
+        alert("Error fetching price. Please try again.");
+        console.error(error);
+    }
+});
+
+document.getElementById("contact_method").addEventListener("change", function() {
+    if (this.value === "whatsapp") {
+        document.getElementById("whatsappField").classList.remove("hidden");
+        document.getElementById("emailField").classList.add("hidden");
+    } else {
+        document.getElementById("emailField").classList.remove("hidden");
+        document.getElementById("whatsappField").classList.add("hidden");
+    }
+});
+
+document.getElementById("buyBtn").addEventListener("click", () => {
+    const contactMethod = document.getElementById("contact_method").value;
+    if (contactMethod === "email") {
+        const email = document.getElementById("contact_email").value;
+        if (!email) {
+            alert("Please enter your email address.");
+            return;
+        }
+    } else if (contactMethod === "whatsapp") {
+        const number = document.getElementById("whatsapp_number").value;
+        if (!number) {
+            alert("Please enter your WhatsApp number.");
+            return;
+        }
+    }
+
+    // Swap to success page
+    document.getElementById("buyPage").classList.add("hidden");
+    document.getElementById("successPage").classList.remove("hidden");
+});
 </script>
-
 {% endblock %}
