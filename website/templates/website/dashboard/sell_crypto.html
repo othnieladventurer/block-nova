@@ -1,45 +1,282 @@
 {% extends "website/dashboard/base.html" %}
 
-{% block title %}Sell Crypto – BlockNova{% endblock %}
-{% block page_title %}Sell Crypto{% endblock %}
+{% block title %}Vendre des cryptos – EasyPass{% endblock %}
+{% block page_title %}Vendre des cryptomonnaies{% endblock %}
 
 {% block content %}
-<div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow p-6 sm:p-8">
+
+{% if success %}
+<div class="w-full bg-white rounded-xl shadow p-6 sm:p-8 text-center">
+    <h3 class="text-lg sm:text-xl font-bold text-green-900 mb-6">
+        Demande de vente envoyée avec succès
+    </h3>
+    <p class="text-sm text-gray-700 mb-6">
+        Merci pour votre demande. Votre transaction a été enregistrée.<br>
+        Veuillez envoyer vos cryptomonnaies au portefeuille indiqué et téléverser la capture d’écran.<br><br>
+        Le traitement sera effectué sous <strong>30 à 55 minutes</strong>.
+    </p>
+
+    <p>Des Troubles? Contactez notre service a la clientele au <span class="font-bold">+50940038603</span></p>
+
+    <div class="flex justify-center gap-4 mt-6">
+        <a href="{% url 'website:sell' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold">
+            Nouvelle vente
+        </a>
+        <a href="{% url 'website:dashboard' %}" class="bg-gray-700 text-white px-4 py-2 rounded-lg font-bold">
+            Tableau de bord
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- SUCCESS BLOCK (hidden by default, used by AJAX) -->
+<div id="sellSuccess" class="hidden w-full bg-white rounded-xl shadow p-6 sm:p-8 text-center">
+    <h3 class="text-lg sm:text-xl font-bold text-green-900 mb-6">
+        Demande de vente envoyée avec succès
+    </h3>
+    <p class="text-sm text-gray-700 mb-6">
+        Nous traitons actuellement votre vente.<br><br>
+        Le reçu de transfert vous sera envoyé une fois la transaction complétée.<br>
+        <strong>Ce processus prend généralement entre 30 et 55 minutes.</strong>
+    </p>
+    <div class="flex justify-center gap-4 mt-6">
+        <a href="{% url 'website:sell' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold">
+            Nouvelle vente
+        </a>
+        <a href="{% url 'website:dashboard' %}" class="bg-gray-700 text-white px-4 py-2 rounded-lg font-bold">
+            Tableau de bord
+        </a>
+    </div>
+</div>
+
+<div class="w-full bg-white rounded-xl shadow p-6 sm:p-8">
     <h3 class="text-lg sm:text-xl font-bold text-blue-900 mb-6">
-        Sell Your Crypto
+        Vendre des cryptomonnaies
     </h3>
 
-    <div class="space-y-5">
-        <!-- Select Crypto -->
-        <div>
-            <label class="block mb-1 font-medium text-sm sm:text-base">Select Crypto</label>
-            <select class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
-                <option>Bitcoin (BTC)</option>
-                <option>Ethereum (ETH)</option>
-                <option>USDT</option>
+    {% if errors %}
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+        <ul class="list-disc pl-5">
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="sellForm">
+        {% csrf_token %}
+
+        <input type="number" name="usd_amount" step="0.01" id="usd_amount"
+               placeholder="Montant en USD (minimum 75 $)"
+               class="w-full border rounded-lg p-3 mb-4"
+               value="{{ usd_amount|default:'' }}" required>
+
+        <select name="crypto" id="crypto" class="w-full border rounded-lg p-3 mb-4">
+            <option value="bitcoin" {% if crypto|default:''|lower == "bitcoin" %}selected{% endif %}>Bitcoin (BTC)</option>
+            <option value="ethereum" {% if crypto|default:''|lower == "ethereum" %}selected{% endif %}>Ethereum (ETH)</option>
+            <option value="litecoin" {% if crypto|default:''|lower == "litecoin" %}selected{% endif %}>Litecoin (LTC)</option>
+            <option value="dogecoin" {% if crypto|default:''|lower == "dogecoin" %}selected{% endif %}>Dogecoin (DOGE)</option>
+            <option value="solana" {% if crypto|default:''|lower == "solana" %}selected{% endif %}>Solana (SOL)</option>
+            <option value="tether" {% if crypto|default:''|lower == "tether" %}selected{% endif %}>Tether (USDT)</option>
+        </select>
+
+        <button type="button" id="calculateBtn"
+                class="w-full bg-green-600 text-white py-3 rounded-lg font-bold mb-4">
+            Obtenir un devis
+        </button>
+
+        <div id="result" class="mt-6 p-4 bg-blue-100 rounded-lg hidden"></div>
+
+        <div id="sellSection" class="mt-6 hidden">
+            <!-- Choix méthode de réception -->
+            <label class="block mb-2">Méthode de réception :</label>
+            <select id="receive_method_modal" name="receive_method"
+                    class="w-1/2 border rounded-lg p-2 mb-2">
+                <option value="">Sélectionner</option>
+                <option value="western_union" {% if receive_method|default:'' == "western_union" %}selected{% endif %}>Western Union</option>
+                <option value="moncash" {% if receive_method|default:'' == "moncash" %}selected{% endif %}>MonCash</option>
             </select>
-        </div>
+            <button type="button" id="selectReceiveMethod"
+                    class="bg-gray-300 px-2 py-1 rounded">Sélectionner</button>
 
-        <!-- Amount -->
-        <div>
-            <label class="block mb-1 font-medium text-sm sm:text-base">Amount</label>
-            <input type="number" placeholder="Enter amount"
-                   class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
-        </div>
+            <!-- WU Fields -->
+            <div id="wuFields" class="mt-4 hidden space-y-2">
+                <input type="text" name="first_name" placeholder="Prénom"
+                       class="w-full border rounded-lg p-3" value="{{ first_name|default:'' }}">
+                <input type="text" name="last_name" placeholder="Nom"
+                       class="w-full border rounded-lg p-3" value="{{ last_name|default:'' }}">
+                <input type="text" name="address" placeholder="Adresse"
+                       class="w-full border rounded-lg p-3" value="{{ address|default:'' }}">
+                <input type="text" name="phone_number" placeholder="Téléphone"
+                       class="w-full border rounded-lg p-3" value="{{ phone_number|default:'' }}">
+            </div>
 
-        <!-- Receive Method -->
-        <div>
-            <label class="block mb-1 font-medium text-sm sm:text-base">Receive Method</label>
-            <select class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
-                <option>Bank Transfer</option>
-                <option>Wallet Balance</option>
-            </select>
-        </div>
+            <!-- MonCash Fields -->
+            <div id="moncashFields" class="mt-4 hidden space-y-2">
+                <input type="text" name="first_name_mc" placeholder="Nom complet"
+                       class="w-full border rounded-lg p-3" value="{{ first_name|default:'' }}">
+                <input type="text" name="phone_number_mc" placeholder="Téléphone"
+                       class="w-full border rounded-lg p-3" value="{{ phone_number|default:'' }}">
+            </div>
 
-        <!-- Submit Button -->
-        <button class="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold transition">
-            Submit Sell Request
+            <p class="text-sm text-gray-700 mb-2 mt-4">
+                Adresse du portefeuille de réception :
+            </p>
+            <p class="font-bold text-blue-900 mb-4">
+                1A2b3C4d5E6f7G8h9I0jKLMNOPQRST
+            </p>
+
+            <label class="block mb-2">Capture d’écran du transfert :</label>
+            <input type="file" name="screenshot" class="w-full border rounded-lg p-3 mb-4" required>
+
+            <button type="button" id="sellBtn"
+                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold opacity-50 cursor-not-allowed" disabled>
+                Soumettre la vente
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- MODAL -->
+<div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full">
+        <h3 class="text-lg font-bold text-blue-900 mb-4">Conditions importantes</h3>
+        <ul class="text-sm text-gray-700 space-y-2">
+            <li>• Frais de transaction Easy Pass : <strong>5%</strong> du montant vendu</li>
+            <li>• Frais Western Union / MonCash : <strong>8 $</strong></li>
+            <li>• Montant minimum : <strong>75 $</strong></li>
+            <li>• Délai de traitement : <strong>30 à 55 minutes</strong></li>
+            <li>• En confirmant, vous acceptez nos <strong>Conditions d’utilisation</strong></li>
+        </ul>
+        <p class="text-sm text-gray-800 mt-4">
+            <strong>Montant final net que vous recevrez :</strong>
+            <span id="modalNetAmount">$0.00</span>
+        </p>
+        <button id="confirmSubmitBtn"
+                class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-bold">
+            Confirmer et accepter
         </button>
     </div>
 </div>
+
+<script>
+async function getCryptoPrice(crypto) {
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`);
+    const data = await res.json();
+    return data[crypto].usd;
+}
+
+// Calculate quote
+document.getElementById("calculateBtn").onclick = async () => {
+    const usd = parseFloat(document.getElementById("usd_amount").value);
+    if (!usd || usd < 75) { alert("Le montant minimum est de 75 $"); return; }
+
+    const crypto = document.getElementById("crypto").value;
+    const price = await getCryptoPrice(crypto);
+
+    const easyPassFeeRate = 0.05; // 5%
+    const transferFee = 8;
+    const easyPassFee = usd * easyPassFeeRate;
+    const netUSD = usd - easyPassFee - transferFee;
+    const cryptoAmount = usd / price;
+
+    document.getElementById("result").innerHTML = `
+        <strong>Montant envoyé :</strong> $${usd.toFixed(2)}<br>
+        <strong>Frais Easy Pass (5%) :</strong> $${easyPassFee.toFixed(2)}<br>
+        <strong>Frais WU / MonCash :</strong> $${transferFee.toFixed(2)}<br>
+        <strong>Montant net reçu :</strong> $${netUSD.toFixed(2)}<br>
+        <strong>Crypto à envoyer :</strong> ${cryptoAmount.toFixed(6)} ${crypto.toUpperCase()}
+    `;
+    document.getElementById("result").classList.remove("hidden");
+    document.getElementById("sellSection").classList.remove("hidden");
+    window.finalNetAmount = netUSD.toFixed(2);
+
+    // Disable submit initially
+    const sellBtn = document.getElementById("sellBtn");
+    sellBtn.disabled = true;
+    sellBtn.classList.add("opacity-50","cursor-not-allowed");
+};
+
+// Show/hide transfer fields
+document.getElementById("selectReceiveMethod").onclick = () => {
+    const method = document.getElementById("receive_method_modal").value;
+    const wuFields = document.getElementById("wuFields");
+    const moncashFields = document.getElementById("moncashFields");
+
+    if (method === "western_union") {
+        wuFields.classList.remove("hidden");
+        moncashFields.classList.add("hidden");
+        wuFields.querySelectorAll("input").forEach(i => i.required = true);
+        moncashFields.querySelectorAll("input").forEach(i => i.required = false);
+    } else if (method === "moncash") {
+        moncashFields.classList.remove("hidden");
+        wuFields.classList.add("hidden");
+        moncashFields.querySelectorAll("input").forEach(i => i.required = true);
+        wuFields.querySelectorAll("input").forEach(i => i.required = false);
+    } else {
+        wuFields.classList.add("hidden");
+        moncashFields.classList.add("hidden");
+    }
+    checkFieldsAndEnableButton();
+};
+
+// Enable submit only if all required fields are filled
+function checkFieldsAndEnableButton() {
+    const sellBtn = document.getElementById("sellBtn");
+    const visibleFields = Array.from(document.querySelectorAll("#wuFields input, #moncashFields input"))
+                               .filter(f => f.offsetParent !== null);
+    const allFilled = visibleFields.every(f => f.value.trim() !== "");
+
+    if (allFilled && visibleFields.length > 0) {
+        sellBtn.disabled = false;
+        sellBtn.classList.remove("opacity-50","cursor-not-allowed");
+    } else {
+        sellBtn.disabled = true;
+        sellBtn.classList.add("opacity-50","cursor-not-allowed");
+    }
+}
+
+// Listen to changes on visible fields
+document.querySelectorAll("#wuFields input, #moncashFields input").forEach(input => {
+    input.addEventListener("input", checkFieldsAndEnableButton);
+});
+
+// Modal flow: submit form via AJAX
+document.getElementById("sellBtn").onclick = () => {
+    document.getElementById("modalNetAmount").textContent = `$${window.finalNetAmount}`;
+    document.getElementById("infoModal").classList.remove("hidden");
+};
+
+document.getElementById("confirmSubmitBtn").onclick = async () => {
+    const form = document.getElementById("sellForm");
+    const formData = new FormData(form);
+
+    const response = await fetch("", {
+        method: "POST",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+        },
+        body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        // Hide modal
+        document.getElementById("infoModal").classList.add("hidden");
+
+        // Hide form container
+        form.closest(".bg-white").classList.add("hidden");
+
+        // Show success block
+        document.getElementById("sellSuccess").classList.remove("hidden");
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+};
+</script>
+
 {% endblock %}

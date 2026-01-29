@@ -1,0 +1,117 @@
+{% extends "website/dashboard/base.html" %}
+
+{% block title %}Paramètres du compte – EasyPass{% endblock %}
+{% block page_title %}Paramètres du compte{% endblock %}
+
+{% block content %}
+<div id="settingsPage" class="w-full bg-white rounded-xl shadow p-6 sm:p-8">
+    <h3 class="text-lg sm:text-xl font-bold text-blue-900 mb-6">
+        Modifier vos informations
+    </h3>
+
+    {% if success %}
+    <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+        Vos informations ont été mises à jour avec succès !
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="settingsForm">
+        {% csrf_token %}
+        <!-- Name -->
+        <div class="space-y-4">
+            <input type="text" name="first_name" placeholder="Prénom"
+                   class="w-full border rounded-lg p-3"
+                   value="{{ request.user.first_name }}">
+
+            <input type="text" name="last_name" placeholder="Nom"
+                   class="w-full border rounded-lg p-3"
+                   value="{{ request.user.last_name }}">
+
+            <input type="text" name="phone_number" placeholder="Téléphone"
+                   class="w-full border rounded-lg p-3"
+                   value="{{ request.user.phone_number }}">
+        </div>
+
+        <!-- Contact Method -->
+        <div class="mt-4">
+            <label for="contact_method" class="block mb-2">Méthode de contact préférée :</label>
+            <select name="contact_method" id="contact_method" class="w-full border rounded-lg p-3">
+                <option value="">Sélectionner</option>
+                <option value="email" {% if request.user.email %}selected{% endif %}>Email</option>
+                <option value="whatsapp" {% if request.user.phone_number %}selected{% endif %}>WhatsApp</option>
+            </select>
+
+            <div id="emailField" class="mt-4">
+                <label for="email">Email :</label>
+                <input type="email" name="email" id="email"
+                       class="w-full border rounded-lg p-3"
+                       value="{{ request.user.email }}">
+            </div>
+
+            <div id="whatsappField" class="mt-4 hidden">
+                <label for="whatsapp_number">Numéro WhatsApp :</label>
+                <input type="text" name="whatsapp_number" id="whatsapp_number"
+                       class="w-full border rounded-lg p-3"
+                       value="{{ request.user.phone_number }}">
+            </div>
+        </div>
+
+        <!-- Wallet Address -->
+        <div class="mt-4">
+            <label for="wallet_address">Adresse du portefeuille :</label>
+            <input type="text" name="wallet_address" id="wallet_address"
+                   class="w-full border rounded-lg p-3"
+                   value="{{ request.user.wallet_address }}">
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="mt-4">
+            <label for="profile_picture">Photo de profil :</label>
+            <input type="file" name="profile_picture" id="profile_picture"
+                   class="w-full border rounded-lg p-3">
+            {% if request.user.profile_picture %}
+                <p class="text-sm text-gray-600 mt-2">
+                    Photo actuelle : <img src="{{ request.user.profile_picture.url }}" class="h-10 w-10 rounded-full inline">
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold">
+                Sauvegarder les modifications
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById("contact_method")?.addEventListener("change", function() {
+    if (this.value === "whatsapp") {
+        document.getElementById("whatsappField").classList.remove("hidden");
+        document.getElementById("emailField").classList.add("hidden");
+    } else {
+        document.getElementById("emailField").classList.remove("hidden");
+        document.getElementById("whatsappField").classList.add("hidden");
+    }
+});
+
+// On page load, adjust visible field based on selected method
+window.addEventListener('DOMContentLoaded', () => {
+    const method = document.getElementById("contact_method").value;
+    if (method === "whatsapp") {
+        document.getElementById("whatsappField").classList.remove("hidden");
+        document.getElementById("emailField").classList.add("hidden");
+    } else {
+        document.getElementById("emailField").classList.remove("hidden");
+        document.getElementById("whatsappField").classList.add("hidden");
+    }
+});
+</script>
+{% endblock %}

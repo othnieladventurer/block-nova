@@ -1,108 +1,241 @@
 {% extends "website/dashboard/base.html" %}
 
-{% block title %}Dashboard – Easy Pass{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
+{% block title %}Tableau de bord – Easy Pass{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
 
 {% block content %}
 <!-- STATS -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
     <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-sm text-gray-500">Total Transactions</p>
-        <h3 class="text-2xl font-bold mt-2">24</h3>
+        <p class="text-sm text-gray-500">Total des transactions</p>
+        <h3 class="text-2xl font-bold mt-2">{{ total_transactions }}</h3>
     </div>
     <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-sm text-gray-500">Crypto Purchased</p>
-        <h3 class="text-2xl font-bold mt-2">$1,240</h3>
+        <p class="text-sm text-gray-500">Cryptomonnaies achetées</p>
+        <h3 class="text-2xl font-bold mt-2">${{ crypto_purchased }}</h3>
     </div>
     <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-sm text-gray-500">Pending Orders</p>
-        <h3 class="text-2xl font-bold mt-2">2</h3>
+        <p class="text-sm text-gray-500">Commandes en attente</p>
+        <h3 class="text-2xl font-bold mt-2">{{ pending_orders }}</h3>
     </div>
     <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-sm text-gray-500">Account Status</p>
-        <h3 class="text-green-600 font-bold mt-2">Verified</h3>
+        <p class="text-sm text-gray-500">Achats livrés</p>
+        <h3 class="text-2xl font-bold mt-2">{{ delivered_orders }}</h3>
     </div>
 </div>
 
 
+
 <!-- QUICK ACTIONS -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
     <!-- BUY -->
     <div class="flex flex-col justify-between bg-white rounded-xl shadow p-8 h-full">
         <div>
-            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Buy Crypto</h3>
+            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Acheter des cryptos</h3>
             <p class="text-sm md:text-base text-gray-600 mb-6">
-                Minimum purchase: <strong>$15</strong><br>
-                Service fee: <strong>$6</strong>
+                Achat minimum : <strong>15 $</strong><br>
+                Frais de service : <strong>6 $</strong>
             </p>
         </div>
         <a href="{% url 'website:buy' %}"
-           class="block text-center bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-bold mt-auto">
-            Buy Crypto
+           class="block text-center bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold mt-auto">
+            Acheter des cryptos
         </a>
     </div>
 
     <!-- SELL -->
     <div class="flex flex-col justify-between bg-white rounded-xl shadow p-8 h-full">
         <div>
-            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Sell Crypto</h3>
+            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Vendre des cryptos</h3>
             <p class="text-sm md:text-base text-gray-600 mb-6">
-                Convert your crypto to local funds.
+                Convertissez vos cryptomonnaies en fonds locaux rapidement et en toute sécurité.
             </p>
         </div>
         <a href="{% url 'website:sell' %}"
-           class="block text-center bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold mt-auto">
-            Sell Crypto
-        </a>
-    </div>
-
-    <!-- WITHDRAW -->
-    <div class="flex flex-col justify-between bg-white rounded-xl shadow p-8 h-full">
-        <div>
-            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-2">Withdraw Crypto</h3>
-            <p class="text-sm md:text-base text-gray-600 mb-6">
-                Receive funds in your wallet within 30 minutes.
-            </p>
-        </div>
-        <a href="{% url 'website:withdraw' %}"
-           class="block text-center bg-gray-800 hover:bg-gray-900 text-white py-3 rounded-lg font-bold mt-auto">
-            Withdraw Crypto
+           class="block text-center bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-bold mt-auto">
+            Vendre des cryptos
         </a>
     </div>
 </div>
 
-
-<!-- TRANSACTION HISTORY -->
+<!-- TRANSACTION HISTORY WITH TABS -->
 <div class="bg-white rounded-xl shadow p-8">
     <h2 class="text-xl md:text-2xl font-bold text-blue-900 mb-6">
-        Transaction History
+        Historique des transactions
     </h2>
 
-    <div class="overflow-x-auto">
-        <table class="w-full min-w-[500px] text-left border-collapse text-sm md:text-base">
-            <thead>
-                <tr class="border-b">
-                    <th class="py-3">Date</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="border-b">
-                    <td class="py-3">2026-01-15</td>
-                    <td>Buy</td>
-                    <td>$100</td>
-                    <td class="text-green-600 font-semibold">Completed</td>
-                </tr>
-                <tr class="border-b">
-                    <td class="py-3">2026-01-12</td>
-                    <td>Withdraw</td>
-                    <td>$250</td>
-                    <td class="text-yellow-600 font-semibold">Pending</td>
-                </tr>
-            </tbody>
-        </table>
+    <!-- Tabs -->
+    <div class="flex border-b mb-4">
+        <button id="buyTabBtn" 
+                class="px-4 py-2 font-semibold border-b-2 border-blue-600 text-blue-600 focus:outline-none">
+            Achats
+        </button>
+        <button id="sellTabBtn" 
+                class="px-4 py-2 font-semibold text-gray-600 border-b-2 border-transparent hover:text-blue-600 focus:outline-none">
+            Ventes
+        </button>
+    </div>
+
+    <!-- Buy Transactions -->
+    <div id="buyTransactions">
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[500px] text-left border-collapse text-sm md:text-base">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-3">Date</th>
+                        <th>Type</th>
+                        <th>Montant</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="buyTransactionTable">
+                    {% for purchase in purchases %}
+                    <tr class="border-b">
+                        <td class="py-3">{{ purchase.created_at }}</td>
+                        <td>{{ purchase.crypto|title }}</td>
+                        <td>${{ purchase.usd_amount }}</td>
+                        <td class="text-green-600 font-semibold">{{ purchase.status|title }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if total_transactions > 5 %}
+        <div class="text-center mt-4">
+            <button id="loadMoreBuyBtn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold">
+                Charger plus
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Sell Transactions -->
+    <div id="sellTransactions" class="hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[500px] text-left border-collapse text-sm md:text-base">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-3">Date</th>
+                        <th>Type</th>
+                        <th>Montant</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="sellTransactionTable">
+                    {% for sale in sell_transactions %}
+                    <tr class="border-b">
+                        <td class="py-3">{{ sale.created_at }}</td>
+                        <td>{{ sale.crypto|title }}</td>
+                        <td>${{ sale.usd_amount }}</td>
+                        <td class="text-green-600 font-semibold">{{ sale.status|title }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if total_sell_transactions > 5 %}
+        <div class="text-center mt-4">
+            <button id="loadMoreSellBtn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold">
+                Charger plus
+            </button>
+        </div>
+        {% endif %}
     </div>
 </div>
+
+<script>
+    const buyTabBtn = document.getElementById("buyTabBtn");
+    const sellTabBtn = document.getElementById("sellTabBtn");
+    const buyTransactions = document.getElementById("buyTransactions");
+    const sellTransactions = document.getElementById("sellTransactions");
+
+    buyTabBtn.addEventListener("click", () => {
+        buyTransactions.classList.remove("hidden");
+        sellTransactions.classList.add("hidden");
+
+        buyTabBtn.classList.add("border-blue-600", "text-blue-600");
+        buyTabBtn.classList.remove("text-gray-600", "border-transparent");
+        sellTabBtn.classList.add("text-gray-600", "border-transparent");
+        sellTabBtn.classList.remove("border-blue-600", "text-blue-600");
+    });
+
+    sellTabBtn.addEventListener("click", () => {
+        sellTransactions.classList.remove("hidden");
+        buyTransactions.classList.add("hidden");
+
+        sellTabBtn.classList.add("border-blue-600", "text-blue-600");
+        sellTabBtn.classList.remove("text-gray-600", "border-transparent");
+        buyTabBtn.classList.add("text-gray-600", "border-transparent");
+        buyTabBtn.classList.remove("border-blue-600", "text-blue-600");
+    });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ---------------- BUY LOAD MORE ---------------- */
+    let buyOffset = {{ purchases|length }};
+    const loadMoreBuyBtn = document.getElementById("loadMoreBuyBtn");
+    const buyTableBody = document.getElementById("buyTransactionTable");
+
+    if (loadMoreBuyBtn) {
+        loadMoreBuyBtn.addEventListener("click", function () {
+            fetch(`/dashboard/load-more/?offset=${buyOffset}&limit=5`)
+                .then(res => res.json())
+                .then(data => {
+                    data.purchases.forEach(p => {
+                        const row = document.createElement("tr");
+                        row.classList.add("border-b");
+                        row.innerHTML = `
+                            <td class="py-3">${p.created_at}</td>
+                            <td>${p.crypto}</td>
+                            <td>$${p.usd_amount}</td>
+                            <td class="text-green-600 font-semibold">${p.status}</td>
+                        `;
+                        buyTableBody.appendChild(row);
+                    });
+
+                    buyOffset += data.purchases.length;
+                    if (data.purchases.length < 5) {
+                        loadMoreBuyBtn.style.display = "none";
+                    }
+                });
+        });
+    }
+
+    /* ---------------- SELL LOAD MORE ---------------- */
+    let sellOffset = {{ sell_transactions|length }};
+    const loadMoreSellBtn = document.getElementById("loadMoreSellBtn");
+    const sellTableBody = document.getElementById("sellTransactionTable");
+
+    if (loadMoreSellBtn) {
+        loadMoreSellBtn.addEventListener("click", function () {
+            fetch(`/dashboard/load-more-sells/?offset=${sellOffset}&limit=5`)
+                .then(res => res.json())
+                .then(data => {
+                    data.sell_transactions.forEach(s => {
+                        const row = document.createElement("tr");
+                        row.classList.add("border-b");
+                        row.innerHTML = `
+                            <td class="py-3">${s.created_at}</td>
+                            <td>${s.crypto}</td>
+                            <td>$${s.usd_amount}</td>
+                            <td class="text-green-600 font-semibold">${s.status}</td>
+                        `;
+                        sellTableBody.appendChild(row);
+                    });
+
+                    sellOffset += data.sell_transactions.length;
+                    if (data.sell_transactions.length < 5) {
+                        loadMoreSellBtn.style.display = "none";
+                    }
+                });
+        });
+    }
+});
+</script>
+
 {% endblock %}

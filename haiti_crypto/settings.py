@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 os.environ['TZ'] = 'America/New_York'
 import environ
+import dj_database_url
 
 
 from decouple import config
@@ -100,14 +101,21 @@ AUTH_USER_MODEL = 'customusers.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DATABASE_URL'),
+        'PORT': '5432', 
     }
 }
 
+
+POSTGRES_LOCALLY= False
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == False:
+    DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

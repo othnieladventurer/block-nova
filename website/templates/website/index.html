@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easy Pass – Buy & Sell Crypto Easily</title>
-    <meta name="description" content="Secure and fast platform to buy and sell cryptocurrencies globally with a minimum purchase of $15.">
+    <title>Easy Pass – Acheter & Vendre des Cryptos Facilement</title>
+    <meta name="description" content="Plateforme sécurisée et rapide pour acheter et vendre des cryptomonnaies dans le monde entier avec un achat minimum de 15 $.">
    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
@@ -16,36 +16,35 @@
     }
 </style>
 
+
+<script src="//code.tidio.co/ya5jaldurzkajjulahbc552d6bedcvfy.js" async></script>
 <body class="bg-gray-50 text-gray-800 scroll-smooth">
 
 <!-- ================= NAVBAR ================= -->
 <nav class="fixed top-0 w-full bg-white shadow z-50">
   <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
-    <!-- Logo -->
     <a href="#hero" class="text-2xl font-bold text-blue-900">
-      Easy <span class="text-green-500">Pass </span>
+      Easy <span class="text-green-500">Pass</span>
     </a>
 
-    <!-- Desktop Menu -->
     <div class="hidden md:flex items-center space-x-8">
-      <a href="#hero" class="hover:text-blue-700">Home</a>
-      <a href="#about" class="hover:text-blue-700">About</a>
+      <a href="#hero" class="hover:text-blue-700">Accueil</a>
+      <a href="#about" class="hover:text-blue-700">À propos</a>
       <a href="#services" class="hover:text-blue-700">Services</a>
-      <a href="#how" class="hover:text-blue-700">How it Works</a>
+      <a href="#how" class="hover:text-blue-700">Fonctionnement</a>
       <a href="#contact" class="hover:text-blue-700">Contact</a>
 
       {% if user.is_authenticated %}
       <a href="{% url 'website:dashboard' %}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-        Dashboard
+        Tableau de bord
       </a>
       {% else %}
       <a href="{% url 'users:login' %}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-        Login
+        Connexion
       </a>
       {% endif %}
     </div>
 
-    <!-- Mobile Menu Button -->
     <button id="menu-btn" class="md:hidden text-blue-900 focus:outline-none">
       <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -54,22 +53,21 @@
     </button>
   </div>
 
-  <!-- Mobile Menu -->
   <div id="mobile-menu" class="h-0 overflow-hidden transition-all duration-500 ease-in-out md:hidden bg-white shadow-lg">
     <div class="flex flex-col items-center justify-center h-full space-y-6 px-8 py-6">
-      <a href="#hero" class="text-lg font-medium hover:text-blue-700">Home</a>
-      <a href="#about" class="text-lg font-medium hover:text-blue-700">About</a>
+      <a href="#hero" class="text-lg font-medium hover:text-blue-700">Accueil</a>
+      <a href="#about" class="text-lg font-medium hover:text-blue-700">À propos</a>
       <a href="#services" class="text-lg font-medium hover:text-blue-700">Services</a>
-      <a href="#how" class="text-lg font-medium hover:text-blue-700">How it Works</a>
+      <a href="#how" class="text-lg font-medium hover:text-blue-700">Fonctionnement</a>
       <a href="#contact" class="text-lg font-medium hover:text-blue-700">Contact</a>
 
       {% if user.is_authenticated %}
-      <a href="{% url 'crypto:dashboard' %}" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-        Dashboard
+      <a href="{% url 'website:dashboard' %}" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        Tableau de bord
       </a>
       {% else %}
       <a href="{% url 'users:login' %}" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-        Login
+        Connexion
       </a>
       {% endif %}
     </div>
@@ -81,17 +79,17 @@
   <div class="max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
     <div>
       <h1 class="text-5xl font-bold mb-6 leading-tight">
-        Buy and Sell Cryptocurrencies Safely
+        Achetez et vendez des cryptomonnaies en toute sécurité
       </h1>
       <p class="text-xl mb-8">
-        Minimum purchase $15 with a $6 platform fee. Fast, secure transactions and crypto delivered directly to your wallet within 30 minutes.
+        Achat minimum de 15 $ avec des frais de plateforme de 6 $. Transactions rapides et sécurisées, crypto livrée directement dans votre portefeuille sous 30 a 55 minutes minutes.
       </p>
       <div class="flex gap-4">
         <a href="{% url 'users:login' %}" class="bg-green-500 hover:bg-green-600 px-8 py-4 rounded-lg font-bold">
-          Buy Crypto
+          Acheter des cryptos
         </a>
         <a href="{% url 'users:register' %}" class="bg-white text-blue-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100">
-          Create Account
+          Créer un compte
         </a>
       </div>
     </div>
@@ -99,24 +97,24 @@
   </div>
 </section>
 
-<!-- ================= TRUST / STATS ================= -->
+<!-- ================= STATS ================= -->
 <section class="bg-white">
     <div class="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-8 text-center">
         <div>
-            <h3 class="text-3xl font-bold text-blue-900">15$</h3>
-            <p>Minimum Purchase</p>
+            <h3 class="text-3xl font-bold text-blue-900">15 $</h3>
+            <p>Achat minimum</p>
         </div>
         <div>
-            <h3 class="text-3xl font-bold text-blue-900">6$</h3>
-            <p>Service Fee</p>
+            <h3 class="text-3xl font-bold text-blue-900">6 $</h3>
+            <p>Frais de service</p>
         </div>
         <div>
             <h3 class="text-3xl font-bold text-blue-900">30 min</h3>
-            <p>Crypto Delivery</p>
+            <p>Livraison crypto</p>
         </div>
         <div>
-            <h3 class="text-3xl font-bold text-blue-900">Secure</h3>
-            <p>All Transactions Protected</p>
+            <h3 class="text-3xl font-bold text-blue-900">Sécurisé</h3>
+            <p>Toutes les transactions sont protégées</p>
         </div>
     </div>
 </section>
@@ -125,18 +123,18 @@
 <section id="about" class="bg-gray-100">
     <div class="max-w-7xl mx-auto px-8 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div>
-            <h2 class="text-4xl font-bold text-blue-900 mb-6">About Easy Pass </h2>
+            <h2 class="text-4xl font-bold text-blue-900 mb-6">À propos de Easy Pass</h2>
             <p class="mb-4">
-                Easy Pass  is a fast, secure platform for buying and selling cryptocurrencies worldwide.
+                Easy Pass est une plateforme rapide et sécurisée pour acheter et vendre des cryptomonnaies dans le monde entier.
             </p>
             <p class="mb-6">
-                Our platform ensures easy access to crypto with transparent fees and instant delivery to your wallet.
+                Nous offrons un accès simple aux cryptos avec des frais transparents et une livraison rapide vers votre portefeuille.
             </p>
             <ul class="space-y-3">
-                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> User-friendly platform</li>
-                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> Minimum purchase $15</li>
-                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> $6 platform fee per transaction</li>
-                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> Crypto delivered to wallet within 30 minutes</li>
+                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> Plateforme simple et intuitive</li>
+                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> Achat minimum de 15 $</li>
+                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> Frais fixes de 6 $ par transaction</li>
+                <li class="flex items-center"><i data-feather="check-circle" class="text-green-500 mr-2"></i> Crypto reçue sous 30 - 55 minutes max</li>
             </ul>
         </div>
         <img src="https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg" class="rounded-xl shadow-xl">
@@ -146,27 +144,17 @@
 <!-- ================= SERVICES ================= -->
 <section id="services">
     <div class="max-w-7xl mx-auto px-8 py-20">
-        <h2 class="text-4xl font-bold text-center text-blue-900 mb-12">Our Services</h2>
-        <div class="grid md:grid-cols-4 gap-8">
+        <h2 class="text-4xl font-bold text-center text-blue-900 mb-12">Nos services</h2>
+        <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             <div class="bg-white p-8 rounded-xl shadow text-center">
                 <i data-feather="dollar-sign" class="mx-auto mb-4 text-blue-700"></i>
-                <h3 class="font-bold text-xl mb-2">Buy Crypto</h3>
-                <p>Purchase cryptocurrencies quickly and securely through our platform.</p>
+                <h3 class="font-bold text-xl mb-2">Acheter des cryptos</h3>
+                <p>Achetez des cryptomonnaies rapidement et en toute sécurité.</p>
             </div>
             <div class="bg-white p-8 rounded-xl shadow text-center">
                 <i data-feather="credit-card" class="mx-auto mb-4 text-blue-700"></i>
-                <h3 class="font-bold text-xl mb-2">Sell Crypto</h3>
-                <p>Sell your crypto easily and receive funds directly to your account.</p>
-            </div>
-            <div class="bg-white p-8 rounded-xl shadow text-center">
-                <i data-feather="arrow-up" class="mx-auto mb-4 text-blue-700"></i>
-                <h3 class="font-bold text-xl mb-2">Withdraw</h3>
-                <p>Withdraw your funds safely to your bank or wallet.</p>
-            </div>
-            <div class="bg-white p-8 rounded-xl shadow text-center">
-                <i data-feather="arrow-down" class="mx-auto mb-4 text-blue-700"></i>
-                <h3 class="font-bold text-xl mb-2">Deposit</h3>
-                <p>Add funds to your account to start buying or selling crypto.</p>
+                <h3 class="font-bold text-xl mb-2">Vendre des cryptos</h3>
+                <p>Vendez vos cryptos facilement via notre plateforme.</p>
             </div>
         </div>
     </div>
@@ -175,13 +163,51 @@
 <!-- ================= HOW IT WORKS ================= -->
 <section id="how" class="bg-blue-900 text-white">
     <div class="max-w-7xl mx-auto px-8 py-20">
-        <h2 class="text-4xl font-bold text-center mb-12">How It Works</h2>
+        <h2 class="text-4xl font-bold text-center mb-12">Comment ça fonctionne</h2>
         <div class="grid md:grid-cols-5 gap-8 text-center">
-            <div>1<br><strong>Login to Account</strong></div>
-            <div>2<br><strong>Access Dashboard</strong></div>
-            <div>3<br><strong>Choose Transaction</strong></div>
-            <div>4<br><strong>Buy Crypto</strong></div>
-            <div>5<br><strong>Receive Crypto in Wallet</strong><br>Within 30 Minutes</div>
+            <div>1<br><strong>Connexion</strong></div>
+            <div>2<br><strong>Accéder au tableau de bord</strong></div>
+            <div>3<br><strong>Choisir une transaction</strong></div>
+            <div>4<br><strong>Acheter ou vendre</strong></div>
+            <div>5<br><strong>Crypto reçue</strong><br>Sous 30 minutes</div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ================= BUY & SELL EXPLANATION ================= -->
+<section id="buy-sell" class="bg-gray-100">
+    <div class="max-w-7xl mx-auto px-8 py-20">
+        <h2 class="text-4xl font-bold text-center text-blue-900 mb-12">Acheter et vendre vos cryptos facilement</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- Buy -->
+            <div class="bg-white p-8 rounded-xl shadow">
+                <h3 class="text-2xl font-bold text-green-600 mb-4">Acheter des cryptos</h3>
+                <p class="mb-4">
+                    Vous pouvez acheter vos cryptomonnaies préférées directement depuis notre plateforme. 
+                    Il vous suffit de sélectionner la crypto que vous souhaitez acheter et de confirmer votre paiement.
+                </p>
+                <p class="mb-4">
+                    Toutes les transactions d'achat sont traitées rapidement, généralement entre <strong>30 et 55 minutes</strong>. 
+                    Une fois votre paiement confirmé, vos cryptos sont livrées directement dans votre portefeuille.
+                </p>
+                <p class="font-semibold text-gray-700">Sécurité et transparence garanties à chaque étape.</p>
+            </div>
+
+            <!-- Sell -->
+            <div class="bg-white p-8 rounded-xl shadow">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4">Vendre des cryptos</h3>
+                <p class="mb-4">
+                    Vous pouvez également vendre vos cryptomonnaies sur Easy Pass. 
+                    Sélectionnez la crypto que vous souhaitez vendre, indiquez le montant et téléversez la capture d’écran du transfert.
+                </p>
+                <p class="mb-4">
+                    Nous traitons vos ventes dans un délai de <strong>30 à 55 minutes</strong>. 
+                    L’argent est ensuite transféré directement via <strong>Western Union</strong> ou <strong>MonCash</strong>, selon votre choix.
+                </p>
+                <p class="font-semibold text-gray-700">Rapide, sécurisé et fiable — recevez votre argent en toute tranquillité.</p>
+            </div>
         </div>
     </div>
 </section>
@@ -190,8 +216,8 @@
 <section id="contact" class="bg-white">
     <div class="max-w-7xl mx-auto px-8 py-20 text-center">
         <h2 class="text-4xl font-bold text-blue-900 mb-6">Contact</h2>
-        <p class="mb-4">Need help? Our team is ready to assist you.</p>
-        <p class="font-bold">Through our chat support open 24/7</p>
+        <p class="mb-4">Besoin d’aide ? Notre équipe est disponible.</p>
+        <p class="font-bold">Support par chat 24h/24 et 7j/7</p>
     </div>
 </section>
 
@@ -199,41 +225,39 @@
 <footer class="bg-gray-900 text-gray-300">
     <div class="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-8">
         <div>
-            <h3 class="text-white text-xl font-bold mb-4">Easy Pass </h3>
-            <p>Secure and fast platform for buying and selling crypto globally.</p>
+            <h3 class="text-white text-xl font-bold mb-4">Easy Pass</h3>
+            <p>Plateforme sécurisée pour acheter et vendre des cryptos dans le monde entier.</p>
         </div>
         <div>
             <h4 class="text-white font-bold mb-3">Navigation</h4>
             <ul class="space-y-2">
-                <li><a href="#hero" class="hover:text-white">Home</a></li>
-                <li><a href="#about" class="hover:text-white">About</a></li>
+                <li><a href="#hero" class="hover:text-white">Accueil</a></li>
+                <li><a href="#about" class="hover:text-white">À propos</a></li>
                 <li><a href="#services" class="hover:text-white">Services</a></li>
-                <li><a href="#how" class="hover:text-white">How It Works</a></li>
+                <li><a href="#how" class="hover:text-white">Fonctionnement</a></li>
             </ul>
         </div>
         <div>
             <h4 class="text-white font-bold mb-3">Services</h4>
             <ul class="space-y-2">
-                <li><a href="#services" class="hover:text-white">Buy Crypto</a></li>
-                <li><a href="#services" class="hover:text-white">Sell Crypto</a></li>
-                <li><a href="#services" class="hover:text-white">Withdraw</a></li>
-                <li><a href="#services" class="hover:text-white">Deposit</a></li>
+                <li><a href="#services" class="hover:text-white">Acheter des cryptos</a></li>
+                <li><a href="#services" class="hover:text-white">Vendre des cryptos</a></li>
             </ul>
         </div>
         <div>
             <h4 class="text-white font-bold mb-3">Support</h4>
             <ul class="space-y-2">
                 <li><a href="#contact" class="hover:text-white">Contact</a></li>
-                <li><a href="#contact" class="hover:text-white">Help Center</a></li>
+                <li><a href="#contact" class="hover:text-white">Centre d’aide</a></li>
                 <li><a href="#contact" class="hover:text-white">FAQ</a></li>
-                <li><a href="{% url 'website:terms_of_use'%}" class="hover:text-white">Terms Of Use</a></li>
-                <li><a href="{% url 'website:privacy_policy'%}" class="hover:text-white">Privacy Policy</a></li>
+                <li><a href="{% url 'website:terms_of_use'%}" class="hover:text-white">Conditions d’utilisation</a></li>
+                <li><a href="{% url 'website:privacy_policy'%}" class="hover:text-white">Politique de confidentialité</a></li>
             </ul>
         </div>
     </div>
 
     <div class="text-center text-sm text-gray-500 py-6 border-t border-gray-800">
-        © 2026 Easy Pass — All rights reserved
+        © 2026 Easy Pass — Tous droits réservés
     </div>
 </footer>
 

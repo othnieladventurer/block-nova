@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Dashboard – Easy Pass{% endblock %}</title>
+  <title>{% block title %}Tableau de bord – Easy Pass{% endblock %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -12,7 +12,11 @@
 <!-- SIDENAV -->
 <aside id="sidenav" class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
   <div class="h-16 flex items-center justify-between border-b px-4">
-    <h1 class="text-2xl font-bold text-blue-900"><a href="{% url 'website:dashboard' %}"> Easy<span class="text-green-500">Pass</span></a></h1>
+    <h1 class="text-2xl font-bold text-blue-900">
+      <a href="{% url 'website:dashboard' %}">
+        Easy<span class="text-green-500">Pass</span>
+      </a>
+    </h1>
     <!-- Close Button (visible only on small screens) -->
     <button id="close-btn" class="md:hidden text-gray-600 focus:outline-none">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,12 +28,21 @@
 
   <nav class="p-6 space-y-4">
     {% block sidenav %}
-    <a href="{% url 'website:dashboard' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">Dashboard</a>
-    <a href="{% url 'website:buy' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">Buy Crypto</a>
-    <a href="{% url 'website:sell' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">Sell Crypto</a>
-    <a href="{% url 'website:withdraw' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">Withdraw Crypto</a>
-    <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-100">Settings</a>
-    <a href="{% url 'users:logout' %}" class="block px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 font-semibold">Logout</a>
+    <a href="{% url 'website:dashboard' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+      Tableau de bord
+    </a>
+    <a href="{% url 'website:buy' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+      Acheter des cryptos
+    </a>
+    <a href="{% url 'website:sell' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+      Vendre des cryptos
+    </a>
+    <a href="{% url 'website:account_settings' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-100">
+      Paramètres
+    </a>
+    <a href="{% url 'users:logout' %}" class="block px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 font-semibold">
+      Déconnexion
+    </a>
     {% endblock %}
   </nav>
 </aside>
@@ -48,17 +61,17 @@
         </svg>
       </button>
       <h2 class="text-lg font-semibold text-gray-700">
-        {% block page_title %}Dashboard{% endblock %}
+        {% block page_title %}Tableau de bord{% endblock %}
       </h2>
     </div>
 
     <!-- Profile Dropdown -->
     <div class="relative">
       <button id="profile-btn" class="flex items-center space-x-3 focus:outline-none">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile"
-            class="w-10 h-10 rounded-full border-2 border-blue-900">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profil"
+             class="w-10 h-10 rounded-full border-2 border-blue-900">
         
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M19 9l-7 7-7-7" />
         </svg>
@@ -67,9 +80,15 @@
       <!-- Dropdown Menu -->
       <div id="dropdown-menu"
            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden">
-        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
-        <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 font-semibold">Logout</a>
+        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          Profil
+        </a>
+        <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          Paramètres
+        </a>
+        <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 font-semibold">
+          Déconnexion
+        </a>
       </div>
     </div>
   </header>
@@ -77,7 +96,7 @@
   <!-- PAGE CONTENT -->
   <main class="p-8">
     {% block content %}
-    <!-- Page-specific content goes here -->
+    <!-- Contenu spécifique à la page -->
     {% endblock %}
   </main>
 

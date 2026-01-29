@@ -1,13 +1,46 @@
 {% extends "website/dashboard/base.html" %}
 
-{% block title %}Buy Crypto – BlockNova{% endblock %}
-{% block page_title %}Buy Crypto{% endblock %}
+{% block title %}Acheter des cryptos – EasyPass{% endblock %}
+{% block page_title %}Acheter des cryptos{% endblock %}
 
 {% block content %}
+{% if success %}
+<!-- Success Page -->
+<div id="successPage" class="w-full bg-white rounded-xl shadow p-6 sm:p-8 text-center">
+    <h3 class="text-lg sm:text-xl font-bold text-green-900 mb-6">
+        Achat réussi !
+    </h3>
+    <p class="text-sm text-gray-700 mb-6">
+        Merci pour votre achat.<br>
+        
+        {% if contact_method == "email" %}
+            Veuillez consulter votre <span class="font-bold">boîte e-mail</span> à l’adresse 
+            <span class="font-bold">{{ final_email }}</span> pour les instructions de paiement.
+        {% elif contact_method == "whatsapp" %}
+            Veuillez consulter votre <span class="font-bold">téléphone (WhatsApp)</span> au numéro 
+            <span class="font-bold">{{ whatsapp_number }}</span> pour les instructions de paiement.
+
+            <p>Des Troubles? Contactez notre service a la clientele au <span class="font-bold">+50940038603</span></p>
+        {% endif %}
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-center gap-4 mt-6">
+        <a href="{% url 'website:buy' %}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold">
+            Acheter à nouveau
+        </a>
+        <a href="{% url 'website:dashboard' %}" 
+           class="bg-green-700 hover:bg-gray-800 text-white py-2 px-4 rounded-lg font-bold">
+            Aller au tableau de bord
+        </a>
+    </div>
+</div>
+{% else %}
 <!-- Buy Page -->
 <div id="buyPage" class="w-full bg-white rounded-xl shadow p-6 sm:p-8">
     <h3 class="text-lg sm:text-xl font-bold text-blue-900 mb-6">
-        Buy Cryptocurrency
+        Acheter des cryptomonnaies
     </h3>
 
     {% if error %}
@@ -19,7 +52,7 @@
     <form method="post" id="buyForm">
         {% csrf_token %}
         <div class="space-y-4">
-            <input type="number" step="0.01" name="usd_amount" id="usd_amount" placeholder="Enter USD amount"
+            <input type="number" step="0.01" name="usd_amount" id="usd_amount" placeholder="Entrez le montant en USD"
                    class="w-full border rounded-lg p-3" required>
 
             <select name="crypto" id="crypto" class="w-full border rounded-lg p-3" required>
@@ -28,11 +61,12 @@
                 <option value="litecoin">Litecoin (LTC)</option>
                 <option value="dogecoin">Dogecoin (DOGE)</option>
                 <option value="solana">Solana (SOL)</option>
+                <option value="tether">Tether (USDT)</option>
             </select>
 
             <button type="button" id="calculateBtn"
                     class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition">
-                Get Quote
+                Obtenir un devis
             </button>
         </div>
 
@@ -41,47 +75,53 @@
 
         <!-- Contact Method -->
         <div id="contactSection" class="mt-6 hidden">
-            <label for="contact_method">Preferred Contact Method:</label>
+            <label for="contact_method">Méthode de contact préférée :</label>
             <select name="contact_method" id="contact_method" class="w-full border rounded-lg p-3" required>
-                <option value="email">Email</option>
+                
                 <option value="whatsapp">WhatsApp</option>
             </select>
 
             <!-- Email Field -->
             <div id="emailField" class="mt-4 hidden">
-                <label for="contact_email">Email Address:</label>
+                <label for="contact_email">Adresse e-mail :</label>
                 <input type="email" name="contact_email" id="contact_email"
-                       class="w-full border rounded-lg p-3" placeholder="you@example.com">
+                    class="w-full border rounded-lg p-3"
+                    value="{{ request.user.email }}"
+                    placeholder="vous@exemple.com">
+
+                <label for="new_contact_email" class="mt-2 block text-sm text-gray-600">
+                    Ajouter une autre adresse e-mail (optionnel) :
+                </label>
+                <input type="email" name="new_contact_email" id="new_contact_email"
+                    class="w-full border rounded-lg p-3"
+                    placeholder="Entrez une nouvelle adresse e-mail si vous le souhaitez">
             </div>
 
             <!-- WhatsApp Field -->
             <div id="whatsappField" class="mt-4 hidden">
-                <label for="whatsapp_number">WhatsApp Number:</label>
+                <label for="whatsapp_number">Numéro WhatsApp :</label>
                 <input type="text" name="whatsapp_number" id="whatsapp_number"
-                       class="w-full border rounded-lg p-3" placeholder="+509XXXXXXXX">
+                    class="w-full border rounded-lg p-3" placeholder="+33XXXXXXXXX">
+            </div>
+
+            <!-- Crypto Address Field -->
+            <div id="cryptoAddressField" class="mt-4">
+                <label for="crypto_address">Adresse du portefeuille : (Ajoutez l’adresse à laquelle vous souhaitez recevoir vos cryptos)</label>
+                <input type="text" name="crypto_address" id="crypto_address"
+                    class="w-full border rounded-lg p-3" placeholder="Entrez l’adresse de votre portefeuille" required>
             </div>
         </div>
 
         <!-- Buy Button -->
         <div id="buySection" class="mt-6 hidden">
-            <button type="button" id="buyBtn"
+            <button type="submit" id="buyBtn"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold transition">
-                Buy Now
+                Acheter maintenant
             </button>
         </div>
     </form>
 </div>
-
-<!-- Success Page -->
-<div id="successPage" class="w-full bg-white rounded-xl shadow p-6 sm:p-8 hidden">
-    <h3 class="text-lg sm:text-xl font-bold text-green-900 mb-6">
-        Purchase Successful!
-    </h3>
-    <p class="text-sm text-gray-700 mb-4">
-        Thank you for your purchase. Please verify your <span class="font-bold">email address</span> or 
-        <span class="font-bold">WhatsApp number</span> to receive instructions for completing your transaction.
-    </p>
-</div>
+{% endif %}
 
 <script>
 async function getCryptoPrice(crypto) {
@@ -91,12 +131,24 @@ async function getCryptoPrice(crypto) {
     return data[crypto].usd;
 }
 
-document.getElementById("calculateBtn").addEventListener("click", async () => {
+function toggleContactFields() {
+    const method = document.getElementById("contact_method").value;
+
+    if (method === "whatsapp") {
+        document.getElementById("whatsappField").classList.remove("hidden");
+        document.getElementById("emailField").classList.add("hidden");
+    } else {
+        document.getElementById("emailField").classList.remove("hidden");
+        document.getElementById("whatsappField").classList.add("hidden");
+    }
+}
+
+document.getElementById("calculateBtn")?.addEventListener("click", async () => {
     const usdAmount = parseFloat(document.getElementById("usd_amount").value);
     const crypto = document.getElementById("crypto").value;
 
     if (!usdAmount || usdAmount < 10) {
-        alert("Minimum purchase is $10. Please update the amount.");
+        alert("Le montant minimum d’achat est de 10 $. Veuillez ajuster le montant.");
         return;
     }
 
@@ -109,54 +161,29 @@ document.getElementById("calculateBtn").addEventListener("click", async () => {
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML = `
             <p class="font-bold text-blue-900">
-                Entered: $${usdAmount.toFixed(2)} <br>
-                Fee: $${fee.toFixed(2)} <br>
-                Total: $${total.toFixed(2)} <br><br>
-                You will receive: ${cryptoAmount.toFixed(6)} ${crypto.toUpperCase()}
+                Montant saisi : $${usdAmount.toFixed(2)} <br>
+                Frais : $${fee.toFixed(2)} <br>
+                Total : $${total.toFixed(2)} <br><br>
+                Vous recevrez : ${cryptoAmount.toFixed(6)} ${crypto.toUpperCase()}
             </p>
             <p class="text-sm text-gray-700">
-                Current ${crypto.charAt(0).toUpperCase() + crypto.slice(1)} price: $${price}
+                Prix actuel : $${price}
             </p>
         `;
         resultDiv.classList.remove("hidden");
 
         document.getElementById("contactSection").classList.remove("hidden");
         document.getElementById("buySection").classList.remove("hidden");
+
+        // ✅ IMPORTANT: force correct field display
+        toggleContactFields();
+
     } catch (error) {
-        alert("Error fetching price. Please try again.");
+        alert("Erreur lors de la récupération du prix. Veuillez réessayer.");
         console.error(error);
     }
 });
 
-document.getElementById("contact_method").addEventListener("change", function() {
-    if (this.value === "whatsapp") {
-        document.getElementById("whatsappField").classList.remove("hidden");
-        document.getElementById("emailField").classList.add("hidden");
-    } else {
-        document.getElementById("emailField").classList.remove("hidden");
-        document.getElementById("whatsappField").classList.add("hidden");
-    }
-});
-
-document.getElementById("buyBtn").addEventListener("click", () => {
-    const contactMethod = document.getElementById("contact_method").value;
-    if (contactMethod === "email") {
-        const email = document.getElementById("contact_email").value;
-        if (!email) {
-            alert("Please enter your email address.");
-            return;
-        }
-    } else if (contactMethod === "whatsapp") {
-        const number = document.getElementById("whatsapp_number").value;
-        if (!number) {
-            alert("Please enter your WhatsApp number.");
-            return;
-        }
-    }
-
-    // Swap to success page
-    document.getElementById("buyPage").classList.add("hidden");
-    document.getElementById("successPage").classList.remove("hidden");
-});
+document.getElementById("contact_method")?.addEventListener("change", toggleContactFields);
 </script>
 {% endblock %}
