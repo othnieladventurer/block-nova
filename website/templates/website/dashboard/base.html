@@ -68,8 +68,17 @@
     <!-- Profile Dropdown -->
     <div class="relative">
       <button id="profile-btn" class="flex items-center space-x-3 focus:outline-none">
+        Hello, {{ user.first_name }}! 
+
+        {% if user.profile_picture %}
+        <img src="{{ user.profile_picture.url }}" alt="Profil"
+             class="w-10 h-10 rounded-full border-2 border-blue-900">
+        {% else %}
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profil"
              class="w-10 h-10 rounded-full border-2 border-blue-900">
+        {% endif %}
+             
+             
         
         <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

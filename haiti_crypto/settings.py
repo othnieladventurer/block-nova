@@ -100,6 +100,8 @@ WSGI_APPLICATION = 'haiti_crypto.wsgi.application'
 
 AUTH_USER_MODEL = 'customusers.CustomUser'
 
+
+LOGIN_URL = 'users:login'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 DATABASES = {
