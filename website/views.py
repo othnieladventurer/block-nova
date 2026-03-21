@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.http import JsonResponse
 from decimal import Decimal
+import uuid
 
 
 
@@ -107,47 +108,64 @@ def load_more_sell_transactions(request):
 
 
 
-
 @login_required
 def buy_crypto(request):
     if request.method == "POST":
-        usd_amount = float(request.POST.get("usd_amount", 0))
+        try:
+            usd_amount = float(request.POST.get("usd_amount", 0))
+        except ValueError:
+            return render(request, "website/dashboard/buy_crypto.html", {
+                "error": "Montant invalide."
+            })
+
         crypto_id = request.POST.get("crypto", "bitcoin")
-        contact_method = request.POST.get("contact_method")
         whatsapp_number = request.POST.get("whatsapp_number")
-        contact_email = request.POST.get("contact_email")
-        new_contact_email = request.POST.get("new_contact_email")
         crypto_address = request.POST.get("crypto_address")
 
-        final_email = new_contact_email if new_contact_email else contact_email
+        # 🔒 Basic validation
+        if usd_amount < 10:
+            return render(request, "website/dashboard/buy_crypto.html", {
+                "error": "Le montant minimum est de 10 $."
+            })
 
-        # Validation
-        if contact_method == "whatsapp" and not whatsapp_number:
+        if not whatsapp_number:
             return render(request, "website/dashboard/buy_crypto.html", {
-                "error": "WhatsApp number is required if you choose WhatsApp."
+                "error": "Le numéro WhatsApp est requis."
             })
-        if contact_method == "email" and not final_email:
-            return render(request, "website/dashboard/buy_crypto.html", {
-                "error": "Email address is required if you choose Email."
-            })
+
         if not crypto_address:
             return render(request, "website/dashboard/buy_crypto.html", {
-                "error": "Wallet address is required to complete your purchase."
+                "error": "Adresse du portefeuille requise."
             })
 
-        # Call CoinGecko API
-        url = "https://api.coingecko.com/api/v3/simple/price"
-        params = {"ids": crypto_id, "vs_currencies": "usd"}
-        response = requests.get(url, params=params)
-        data = response.json()
+        # 🔌 Get crypto price
+        try:
+            url = "https://api.coingecko.com/api/v3/simple/price"
+            params = {"ids": crypto_id, "vs_currencies": "usd"}
+            response = requests.get(url, params=params)
+            data = response.json()
 
-        crypto_price = data[crypto_id]["usd"]
-        crypto_amount = usd_amount / crypto_price
+            crypto_price = data[crypto_id]["usd"]
+        except Exception:
+            return render(request, "website/dashboard/buy_crypto.html", {
+                "error": "Erreur lors de la récupération du prix."
+            })
+
+        # 💰 Calculations
         fee = 6
         total_charge = usd_amount + fee
+        crypto_amount = usd_amount / crypto_price
 
-        # Save purchase
-        Purchase.objects.create(
+        # 🧾 Generate UNIQUE order ID
+        order_id = str(uuid.uuid4()).split("-")[0].upper()
+
+        # 🧠 Ensure uniqueness (rare but necessary)
+        from .models import Purchase
+        while Purchase.objects.filter(order_id=order_id).exists():
+            order_id = str(uuid.uuid4()).split("-")[0].upper()
+
+        # 💾 Save purchase
+        purchase = Purchase.objects.create(
             user=request.user,
             crypto=crypto_id,
             usd_amount=usd_amount,
@@ -155,23 +173,23 @@ def buy_crypto(request):
             total=total_charge,
             crypto_amount=crypto_amount,
             price_at_purchase=crypto_price,
-            contact_method=contact_method,
-            whatsapp_number=whatsapp_number if contact_method == "whatsapp" else None,
+            contact_method="whatsapp",
+            whatsapp_number=whatsapp_number,
             email=False,
             status="pending",
-            crypto_address=crypto_address
+            crypto_address=crypto_address,
+            order_id=order_id
         )
 
+        # 🎯 Success → receipt page
         return render(request, "website/dashboard/buy_crypto.html", {
             "success": True,
-            "final_email": final_email,
-            "contact_method": contact_method,
+            "purchase": purchase,
+            "order_id": order_id,
             "whatsapp_number": whatsapp_number,
         })
 
-
     return render(request, "website/dashboard/buy_crypto.html")
-
 
 
 

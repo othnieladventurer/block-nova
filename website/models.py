@@ -26,6 +26,7 @@ class Purchase(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     crypto_amount = models.DecimalField(max_digits=20, decimal_places=8)
     price_at_purchase = models.DecimalField(max_digits=20, decimal_places=2)
+    order_id = models.CharField(max_length=20, unique=True, blank=True, null=True)
     contact_method = models.CharField(
         max_length=20,
         choices=CONTACT_CHOICES,
